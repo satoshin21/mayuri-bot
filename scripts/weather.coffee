@@ -26,7 +26,6 @@ module.exports = (robot) ->
     request (err, res, body) ->
       json = JSON.parse body
       if day == 3 
-      then
-      msg.reply "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
-       else
-       msg.reply "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
+      msg.send "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
+    else
+       msg.send "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
