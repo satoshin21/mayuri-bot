@@ -9,47 +9,24 @@
 # Author:
 #   asmz
 
-module.exports = (robot) ->
-
-  unless process.env.HUBOT_YAHOO_AMAGUMO_APP_ID?
-    robot.logger.warning 'Required HUBOT_YAHOO_AMAGUMO_APP_ID environment.'
-    return
-
-  width = process.env.HUBOT_YAHOO_AMAGUMO_WIDTH ? "500"
-  height = process.env.HUBOT_YAHOO_AMAGUMO_HEIGHT ? "500"
-
-  robot.respond /amagumo japan/i, (msg) ->
-    msg.send getAmagumoRaderUrl "37.9072841", "137.1255805", "6", "500", "500"
-
-  robot.respond /amagumo( zoom)? me (.+)/i, (msg) ->
-    zoom = if msg.match[1] then "14" else "12"
-    area = msg.match[2]
-
-    msg.http('http://geo.search.olp.yahooapis.jp/OpenLocalPlatform/V1/geoCoder')
-      .query({
-        appid: process.env.HUBOT_YAHOO_AMAGUMO_APP_ID
-        query: area
-        results: 1
-        output: 'json'
-      })  
-      .get() (err, res, body) ->
-        geoinfo = JSON.parse(body)
-        unless geoinfo.Feature?
-          msg.send "Not match \"#{area}\""
-          return
-
-        coordinates = (geoinfo.Feature[0].Geometry.Coordinates).split(",")
-        lon = coordinates[0]
-        lat = coordinates[1]
-
-        msg.send getAmagumoRaderUrl lat, lon, zoom, width, height
-
-getAmagumoRaderUrl = (lat, lon, zoom, width, height) ->
-  url = "http://map.olp.yahooapis.jp/OpenLocalPlatform/V1/static?appid=" +
-         process.env.HUBOT_YAHOO_AMAGUMO_APP_ID +
-        "&lat=" + lat +
-        "&lon=" + lon +
-        "&z=" + zoom +
-        "&width=" + width +
-        "&height=" + height +
-        "&overlay=" + "type:rainfall"
+module.exports = (robot) ->   
+  robot.hear /(.*)の天気/i, (msg) ->
+   switch msg.match[1]
+      when '今日'
+        day = 0
+      when '明日'
+        day = 1
+      when '明後日'
+        day = 2
+      else
+        day = 3
+        break
+    request = msg.http('http://weather.livedoor.com/forecast/webservice/json/v1?city=270000')
+    .get()
+    request (err, res, body) ->
+      json = JSON.parse body
+      if day == 3 
+      then
+      msg.reply "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
+       else
+       msg.reply "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
