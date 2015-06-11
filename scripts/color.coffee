@@ -14,7 +14,8 @@ module.exports = (robot) ->
         msg.send g
         msg.send b
         
-        redNumber = parseInt('09asdf', 10)
+        msg.send "hoge" 
+        redNumber = parseInt('09asdf', 16)
         msg.send redNumber
         msg.send parseInt('a',16)
         
