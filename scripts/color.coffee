@@ -13,6 +13,8 @@ module.exports = (robot) ->
         msg.send r
         msg.send g
         msg.send b
+        msg.send parseInt("123",16)
+        
         red = parseInt(r,16)
         green = parseInt(g,16)
         blue = parseInt(b,16)
