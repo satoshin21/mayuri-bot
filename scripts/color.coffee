@@ -7,4 +7,10 @@ module.exports = (robot) ->
         colorCode = msg.match[1]
         
         r = colorCode[1..2]
-        msg.send r
+        g = colorCode[3..4]
+        b = colorCode[5..6]
+        
+        red = parseInt(r,16)
+        green = parseInt(g,16)
+        blue = parseInt(b,16)
+        msg.send blue
