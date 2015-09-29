@@ -12,22 +12,29 @@
 module.exports = (robot) ->   
   robot.hear /(.*)の天気/i, (msg) ->
    switch msg.match[1]
-      when '今日'
+      when "今日"
         day = 0
-        msg.send "hogehoge"
-      when '明日'
+      when "明日"
         day = 1
-      when '明後日'
+      when "明後日"
         day = 2
       else
         day = 3
         break
         
-    request = msg.http('http://weather.livedoor.com/forecast/webservice/json/v1?city=270000')
-    .get()
+    request = msg.http('http://weather.livedoor.com/forecast/webservice/json/v1?city=270000').get()
     request (err, res, body) ->
       json = JSON.parse body
-      if day == 3 
-      msg.send "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
-    else
-       msg.send "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
+      if day == 3
+        msg.send "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
+      else
+        msg.send "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
+        
+#    request = msg.http('http://weather.livedoor.com/forecast/webservice/json/v1?city=270000')
+#    .get()
+#    request (err, res, body) ->
+#      json = JSON.parse body
+#      if day == 3 
+#      msg.send "ごめんね、" + msg.match[1] + "の天気はよくわからないのです。。"
+#    else
+#       msg.send "トゥットゥルー♪ 今日の天気は" + json['forecasts'][day]['telop'] + "なのです！"
