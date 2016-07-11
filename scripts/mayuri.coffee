@@ -31,8 +31,15 @@ module.exports = (robot) ->
         msg.send msg.random [
             "タイムマシン！凄いね〜",
         ]
-        
+
+    robot.hear /.*おはよう.*/i, (msg) ->
+        msg.send msg.random [
+            "トゥットゥルー♪",
+        ]
+
     robot.hear /ドクペ|ドクター.*ペッパー/i, (msg) ->
         msg.send msg.random [
             "本当にドクペが好きだよね〜",
         ]
+
+
